@@ -75,6 +75,7 @@ install_requires = [
     'invenio-assets>=1.0.0a4',
     'invenio-search>=1.0.0a3',
     'invenio-indexer>=1.0.0a2',
+    'invenio-files-rest',
 ]
 
 packages = find_packages()

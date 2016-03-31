@@ -170,9 +170,9 @@ class Community(db.Model, Timestamp):
 
     last_record_accepted = db.Column(db.DateTime(), nullable=False,
                                      default=datetime(2000, 1, 1, 0, 0, 0))
-    """Last record acceptance datetime"""
+    """Last record acceptance datetime."""
 
-    logo_ext = db.Column(db.String(length=5), nullable=True, default=None)
+    logo_ext = db.Column(db.String(length=4), nullable=True, default=None)
     """Extension of the logo."""
 
     ranking = db.Column(db.Integer, nullable=False, default=0)
@@ -186,7 +186,7 @@ class Community(db.Model, Timestamp):
     #
     owner = db.relationship(User, backref='communities',
                             foreign_keys=[id_user])
-    """ Relation to the owner (User) of the community"""
+    """Relation to the owner (User) of the community."""
 
     pending_requests = db.relationship(InclusionRequest)
     """Requests pending for the acceptance to the community."""
@@ -208,9 +208,10 @@ class Community(db.Model, Timestamp):
         :rtype: str
         """
         if self.logo_ext:
-            return url_for(
-                'static',
-                filename='media/communities' + '/' + self.id + self.logo_ext)
+            buc = current_app.config['COMMUNITIES_BUCKET_UUID']
+            key = "{0}/logo.{1}".format(self.id, self.logo_ext)
+            return url_for('invenio_files_rest.object_api',
+                           bucket_id=buc, key=key)
         else:
             return None
 
